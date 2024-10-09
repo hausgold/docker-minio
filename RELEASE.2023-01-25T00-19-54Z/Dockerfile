@@ -1,5 +1,5 @@
 FROM minio/minio:RELEASE.2023-01-25T00-19-54Z
-MAINTAINER Hermann Mayer "hermann.mayer@hausgold.de"
+LABEL org.opencontainers.image.authors="containers@hausgold.de"
 
 # You can change this environment variable on run's with -e
 ENV MDNS_HOSTNAME=minio.local
@@ -33,4 +33,4 @@ COPY config/supervisor/* /etc/supervisord.d/
 ENTRYPOINT []
 
 # Define the command to run per default
-CMD /usr/bin/supervisord -nc /etc/supervisord.conf
+CMD ["/usr/bin/supervisord", "-nc", "/etc/supervisord.conf"]
