@@ -44,16 +44,12 @@ via mDNS at port 80. The web console is available on port 9090.
 ## docker-compose usage example
 
 ```yaml
-minio:
-  image: hausgold/minio
-  environment:
-    # Mind the .local suffix
-    - MDNS_HOSTNAME=minio.test.local
-  ports:
-    # The ports are just for you to know when configure your
-    # container links, on depended containers
-    - "9000"
-    - "9090"
+services:
+  minio:
+    image: hausgold/minio
+    environment:
+      # Mind the .local suffix
+      MDNS_HOSTNAME: minio.test.local
 ```
 
 ## Host configs
