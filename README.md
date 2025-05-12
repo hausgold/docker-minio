@@ -1,4 +1,4 @@
-![mDNS enabled minio/minio](https://raw.githubusercontent.com/hausgold/docker-minio/master/docs/assets/project.png)
+![mDNS enabled minio/minio](https://raw.githubusercontent.com/hausgold/docker-minio/master/docs/assets/project.svg)
 
 [![Continuous Integration](https://github.com/hausgold/docker-minio/actions/workflows/package.yml/badge.svg?branch=master)](https://github.com/hausgold/docker-minio/actions/workflows/package.yml)
 [![Source Code](https://img.shields.io/badge/source-on%20github-blue.svg)](https://github.com/hausgold/docker-minio)
