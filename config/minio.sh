@@ -8,7 +8,9 @@
 
 export MINIO_BROWSER_REDIRECT_URL="http://${MDNS_HOSTNAME}:9090"
 
-# Start minio
-exec /usr/bin/docker-entrypoint.sh server \
+# Start minio directly, bypassing the base image entrypoint. The entrypoint
+# drops the privileges to its own minio user, pins the data directory to
+# /data and runs its own bucket bootstrap, which we do via minio-manage.sh.
+exec /opt/bitnami/minio/bin/minio server \
   --console-address ':9090' \
   ${MDNS_HOSTNAME}/data

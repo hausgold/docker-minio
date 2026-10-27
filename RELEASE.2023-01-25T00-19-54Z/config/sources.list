@@ -1,0 +1,5 @@
+# Debian 11 (bullseye) reached its end of life, so its package pools are only
+# served from the archive mirror and no longer from the regular mirrors
+deb http://archive.debian.org/debian bullseye main
+deb http://archive.debian.org/debian bullseye-updates main
+deb http://archive.debian.org/debian-security bullseye-security main

@@ -4,10 +4,15 @@
 [![Source Code](https://img.shields.io/badge/source-on%20github-blue.svg)](https://github.com/hausgold/docker-minio)
 [![Docker Image](https://img.shields.io/badge/image-on%20docker%20hub-blue.svg)](https://hub.docker.com/r/hausgold/minio/)
 
-This Docker images provides the [minio/minio](https://hub.docker.com/r/minio/minio) image as base
-with the mDNS/ZeroConf stack on top. So you can enjoy [minio](https://min.io/) while
-it is accessible by default as *minio.local*. (HTTP API Port 80 -> Port 9000,
-Web console Port 9090)
+This Docker images provides the
+[bitnamilegacy/minio](https://hub.docker.com/r/bitnamilegacy/minio) image as
+base with the mDNS/ZeroConf stack on top. So you can enjoy
+[minio](https://min.io/) while it is accessible by default as *minio.local*.
+(HTTP API Port 80 -> Port 9000, Web console Port 9090)
+
+The upstream [minio/minio](https://hub.docker.com/r/minio/minio) images were
+removed from Docker Hub, so we build on the Bitnami packaging of the very same
+MinIO release instead.
 
 The root users credentials are `minioadmin` / `minioadmin`. You can change this
 by the `MINIO_ROOT_USER` / `MINIO_ROOT_PASSWORD` environment variables.

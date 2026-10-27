@@ -1,4 +1,4 @@
-FROM minio/minio:RELEASE.2023-01-25T00-19-54Z
+FROM bitnamilegacy/minio:2023.1.25-debian-11-r2
 LABEL org.opencontainers.image.authors="containers@hausgold.de"
 
 # You can change this environment variable on run's with -e
@@ -8,16 +8,19 @@ ENV MDNS_HOSTNAME=minio.local
 ENV MINIO_ROOT_USER='minioadmin'
 ENV MINIO_ROOT_PASSWORD='minioadmin'
 
-# Install the CentOS 8 BaseOS and OKay's Additional RPM
-# repositories for avahi/avahi-tools
-COPY config/extra.repo /etc/yum.repos.d/extra.repo
+# The mDNS stack (dbus, avahi) and haproxy require root privileges, so we
+# drop the unprivileged user of the base image
+USER root
+
+# Install the archived Debian 11 (bullseye) package repositories, as the
+# regular mirrors no longer serve the package pools of this release
+COPY config/sources.list /etc/apt/sources.list
 
 # Install system packages
-RUN microdnf install \
-  hostname dbus avahi nss-mdns haproxy supervisor && \
-  microdnf clean all && \
-  curl https://dl.min.io/client/mc/release/linux-amd64/mc \
-    --create-dirs -o /usr/local/bin/mc
+RUN apt-get update -yqqq && \
+  apt-get install -y --no-install-recommends \
+    hostname dbus avahi-daemon avahi-utils libnss-mdns haproxy supervisor && \
+  rm -rf /var/lib/apt/lists/*
 
 # Copy custom scripts
 COPY config/*.sh /usr/local/bin/
@@ -27,10 +30,11 @@ RUN chmod +x /usr/local/bin/*
 COPY config/haproxy.conf /etc/haproxy/haproxy.cfg
 
 # Configure supervisord
-COPY config/supervisor/* /etc/supervisord.d/
+COPY config/supervisor/* /etc/supervisor/conf.d/
 
-# Clear the default entrypoint, as it is the mc command
+# Clear the default entrypoint, as it is the MinIO setup wrapper of the base
+# image which we do not use (see config/minio.sh)
 ENTRYPOINT []
 
 # Define the command to run per default
-CMD ["/usr/bin/supervisord", "-nc", "/etc/supervisord.conf"]
+CMD ["/usr/bin/supervisord", "-nc", "/etc/supervisor/supervisord.conf"]

@@ -1,11 +1,8 @@
 #!/bin/bash
 
-# We have no yum/dnf available and microdnf cannot list installed packages. But
-# we know EL8 has at least nss-mdns-0.14.1-9.el8.x86_64 available and installed
-# atow.
-NSS_MDNS='0.14'
-# NSS_MDNS=$(yum list installed | grep '^nss-mdns' | awk '{print $2}' \
-#   | cut -d- -f1 | cut -d. -f1-2 | tr -d ' ')
+# Detect the installed nss-mdns version (major.minor), as the allowed hosts
+# configuration differs between its releases
+NSS_MDNS=$(dpkg-query -W -f='${Version}' libnss-mdns | cut -d. -f1-2)
 
 if [ "${NSS_MDNS}" != '0.10' ]; then
   # After nss-mdns >0.10 we need to reconfigure the allowed hosts to support
@@ -58,7 +55,7 @@ if [ -n "${MDNS_CNAMES}" ]; then
     COMMAND+=" \"${CNAME}\" \`hostname -i\`"
 
     # Write a new supervisord unit file
-    cat > "/etc/supervisord.d/${CNAME}.ini" <<EOF
+    cat > "/etc/supervisor/conf.d/${CNAME}.conf" <<EOF
 [program:${CNAME}]
 priority=20
 directory=/tmp
